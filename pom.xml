@@ -16,6 +16,7 @@
     <modules>
         <module>employee</module>
         <module>employee-data-service</module>
+        <module>common</module>
     </modules>
 
 
