@@ -3,7 +3,9 @@ package com.example.employee.controller;
 import com.example.employee.dto.EmployeeDto;
 import com.example.employee.exception.BusinessException;
 import com.example.employee.exception.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,17 +50,17 @@ public class EmployeeDataController {
     }
 
     @PostMapping(path = "/exist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeDto checkEmployeeExist(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeDto> checkEmployeeExist(@RequestBody EmployeeDto employeeDto) {
         EmployeeDto emp = DATA.get(employeeDto.getMobile());
         if (emp == null) {
             throw new ResourceNotFoundException("Employee not found");
         }
-        return emp;
+        return ResponseEntity.ok(emp);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
         DATA.put(employeeDto.getMobile(), employeeDto);
-        return employeeDto;
+        return ResponseEntity.status(HttpStatus.CREATED).body(employeeDto);
     }
 }
