@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RequestMapping("/emp")
 @RestController
 public class EmployeeController {
@@ -22,7 +24,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping(path = "/exist", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CheckEmployeeResult> checkExist(@RequestBody EmployeeDto employee) {
+    public ResponseEntity<CheckEmployeeResult> checkExist(@RequestBody @Valid EmployeeDto employee) {
         CheckEmployeeResult result = employeeService.checkExist(employee);
         return result.getStatus() == EmployeeCheckingStatus.CREATED
                 ? ResponseEntity.status(HttpStatus.CREATED).body(result) : ResponseEntity.ok(result);
