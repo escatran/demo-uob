@@ -76,7 +76,30 @@ public class EmployeeServiceTests {
     }
 
     @Test
-    public void checkExist_EmployeeExist_ShouldReturnExist() {
+    public void checkExist_EmployeeExist_ShouldReturnExist() throws Exception {
+        EmployeeDto dummyEmployeeDto = EmployeeDto.builder()
+                .firstName(DUMMY_VALUE)
+                .lastName(DUMMY_VALUE)
+                .email(DUMMY_VALUE)
+                .gender(true)
+                .mobile(DUMMY_VALUE)
+                .build();
+        camelContext.getRouteDefinition(CHECK_EMPLOYEE_EXIST_ROUTE).adviceWith(camelContext, new AdviceWithRouteBuilder() {
+            @Override
+            public void configure() throws Exception {
+                weaveById(INVOKE_API_CHECK_EMPLOYEE_EXIST).replace().process(exchange -> {
+                    exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, HttpStatus.OK.value());
+                });
 
+                weaveById(INVOKE_API_CREATE_EMPLOYEE).replace().to(mockEndpointCreateEmployee);
+            }
+        });
+        employeeService = new EmployeeServiceImpl(producerTemplate, camelContext);
+
+
+        CheckEmployeeResult result = employeeService.checkExist(dummyEmployeeDto);
+
+
+        Assert.assertEquals(EmployeeCheckingStatus.ALREADY_EXIST, result.getStatus());
     }
 }
