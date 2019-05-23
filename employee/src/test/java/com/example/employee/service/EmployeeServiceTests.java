@@ -4,18 +4,17 @@ import com.example.employee.dto.CheckEmployeeResult;
 import com.example.employee.dto.EmployeeCheckingStatus;
 import com.example.employee.dto.EmployeeDto;
 import com.example.employee.service.impl.EmployeeServiceImpl;
-import org.apache.camel.CamelContext;
-import org.apache.camel.EndpointInject;
-import org.apache.camel.Exchange;
-import org.apache.camel.ProducerTemplate;
+import org.apache.camel.*;
 import org.apache.camel.builder.AdviceWithRouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.example.employee.router.EmployeeRouter.CHECK_EMPLOYEE_EXIST_ROUTE;
@@ -31,7 +30,7 @@ public class EmployeeServiceTests {
     @Autowired
     private CamelContext camelContext;
 
-    @EndpointInject(uri = "direct:dummyEndpoint")
+    @Produce(uri = "direct:dummyEndpoint")
     private ProducerTemplate producerTemplate;
 
     @EndpointInject(uri = "mock:callCheckExist")
@@ -43,6 +42,7 @@ public class EmployeeServiceTests {
     private EmployeeServiceImpl employeeService;
 
 
+    @DirtiesContext
     @Test
     public void checkExist_EmployeeNotFound_ShouldReturnCreated() throws Exception {
         EmployeeDto dummyEmployeeDto = EmployeeDto.builder()
@@ -75,6 +75,7 @@ public class EmployeeServiceTests {
         Assert.assertEquals(EmployeeCheckingStatus.CREATED, result.getStatus());
     }
 
+    @DirtiesContext
     @Test
     public void checkExist_EmployeeExist_ShouldReturnExist() throws Exception {
         EmployeeDto dummyEmployeeDto = EmployeeDto.builder()
@@ -89,6 +90,7 @@ public class EmployeeServiceTests {
             public void configure() throws Exception {
                 weaveById(INVOKE_API_CHECK_EMPLOYEE_EXIST).replace().process(exchange -> {
                     exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, HttpStatus.OK.value());
+                    exchange.getOut().setBody(dummyEmployeeDto);;
                 });
 
                 weaveById(INVOKE_API_CREATE_EMPLOYEE).replace().to(mockEndpointCreateEmployee);
