@@ -1,5 +1,7 @@
 package com.example.employee.service;
 
+import com.example.employee.dto.CheckEmployeeResult;
+import com.example.employee.dto.EmployeeCheckingStatus;
 import com.example.employee.dto.EmployeeDto;
 import com.example.employee.service.impl.EmployeeServiceImpl;
 import org.apache.camel.CamelContext;
@@ -8,6 +10,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.AdviceWithRouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,11 +67,12 @@ public class EmployeeServiceTests {
         employeeService = new EmployeeServiceImpl(producerTemplate, camelContext);
 
 
-        employeeService.checkExist(dummyEmployeeDto);
+        CheckEmployeeResult result = employeeService.checkExist(dummyEmployeeDto);
 
 
         mockEndpointCreateEmployee.expectedMessageCount(1);
         mockEndpointCreateEmployee.expectedBodiesReceived(dummyEmployeeDto);
+        Assert.assertEquals(EmployeeCheckingStatus.CREATED, result.getStatus());
     }
 
     @Test
