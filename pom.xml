@@ -17,6 +17,7 @@
         <module>employee</module>
         <module>employee-data-service</module>
         <module>common</module>
+        <module>employee-zuul</module>
     </modules>
 
 

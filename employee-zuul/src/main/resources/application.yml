@@ -1,0 +1,29 @@
+server:
+  port: 8000
+  ssl:
+    enabled: true
+    key-alias: server
+    key-password: demo
+    key-store: classpath:server.jks
+    key-store-provider: SUN
+    key-store-type: JKS
+#    trust-store: classpath:server.cer
+#    # Password used to access the trust store.
+#    trust-store-password: demo
+#    # Type of the trust store.
+#    trust-store-type: JKS
+
+    client-auth: need
+
+
+zuul:
+  routes:
+    exist:
+      path: /emp/**
+      url: http://localhost:8080/emp/exist
+    ping:
+      path: /ping/**
+      url: http://localhost:8080/emp
+
+
+
