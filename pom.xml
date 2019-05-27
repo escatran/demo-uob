@@ -18,6 +18,7 @@
         <module>employee-data-service</module>
         <module>common</module>
         <module>employee-zuul</module>
+        <module>uob-client</module>
     </modules>
 
 

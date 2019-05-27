@@ -7,11 +7,11 @@ server:
     key-store: classpath:server.jks
     key-store-provider: SUN
     key-store-type: JKS
-#    trust-store: classpath:server.cer
+    trust-store: classpath:server.jks
 #    # Password used to access the trust store.
-#    trust-store-password: demo
+    trust-store-password: demo
 #    # Type of the trust store.
-#    trust-store-type: JKS
+    trust-store-type: JKS
 
     client-auth: need
 
