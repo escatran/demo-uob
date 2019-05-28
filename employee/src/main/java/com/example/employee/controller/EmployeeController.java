@@ -1,5 +1,6 @@
 package com.example.employee.controller;
 
+import com.example.employee.configuration.EmployeeConfiguration;
 import com.example.employee.dto.CheckEmployeeResult;
 import com.example.employee.dto.EmployeeCheckingStatus;
 import com.example.employee.dto.EmployeeDto;
@@ -17,6 +18,9 @@ import java.util.Date;
 @RequestMapping("/emp")
 @RestController
 public class EmployeeController {
+
+    @Autowired
+    private EmployeeConfiguration employeeConfiguration;
 
     @Autowired
     private EmployeeService employeeService;
