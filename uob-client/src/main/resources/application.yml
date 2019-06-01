@@ -5,6 +5,15 @@ spring:
 server:
   port: 9000
 
+employee:
+  paths:
+    checkEmployeeExists: https://localhost:8000/emp
+    ping: https://localhost:8000/ping
+  sslConfigs:
+    keyStorePassword: demo
+    trustStorePassword: demo
+
+
 logging:
   level:
     org.springframework.security: DEBUG
