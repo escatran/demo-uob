@@ -20,9 +20,6 @@ import java.util.Date;
 public class EmployeeController {
 
     @Autowired
-    private EmployeeConfiguration employeeConfiguration;
-
-    @Autowired
     private EmployeeService employeeService;
 
     @PostMapping(path = "/exist", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
